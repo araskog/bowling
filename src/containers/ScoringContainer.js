@@ -1,5 +1,5 @@
-import RollsButtons from "./RollsButtons";
-import RollsTable from "./RollsTable";
+import RollsButtons from "../components/scoring/RollsButtons";
+import RollsTable from "../components/scoring/RollsTable";
 
 import { Fragment } from "react";
 

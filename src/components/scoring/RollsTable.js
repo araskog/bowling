@@ -1,6 +1,16 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import classes from "./RollsTable.module.css";
 
 const RollsTable = () => {
+  const historicRolls = useSelector((state) => state.rolls);
+  const totalScore = useSelector((state) => state.totalScore);
+  const maxScore = useSelector((state) => state.currentMaxScore);
+  const currentScores = useSelector((state) => state.currentScores);
+
+  useEffect(() => {}, [historicRolls, totalScore, maxScore]);
+
   return (
     <div className={classes.scoringContainer}>
       <table border="0" cellSpacing="0" cellPadding="0">
@@ -46,41 +56,43 @@ const RollsTable = () => {
         </thead>
         <tbody>
           <tr>
-            <td id="r1" className={classes.left}></td>
-            <td id="r2"></td>
-            <td id="r3" className={classes.left}></td>
-            <td id="r4"></td>
-            <td id="r5" className={classes.left}></td>
-            <td id="r6"></td>
-            <td id="r7" className={classes.left}></td>
-            <td id="r8"></td>
-            <td id="r9" className={classes.left}></td>
-            <td id="r10"></td>
-            <td id="r11" className={classes.left}></td>
-            <td id="r12"></td>
-            <td id="r13" className={classes.left}></td>
-            <td id="r14"></td>
-            <td id="r15" className={classes.left}></td>
-            <td id="r16"></td>
-            <td id="r17" className={classes.left}></td>
-            <td id="r18"></td>
-            <td id="r19" className={classes.left}></td>
-            <td id="r20"></td>
-            <td id="r21" className={classes.extraRoll}></td>
-            <td rowSpan="2" id="max-score"></td>
-            <td rowSpan="2" id="total-score"></td>
+            {historicRolls.map((roll, index) => {
+              return (
+                <td
+                  id={index}
+                  key={index}
+                  className={
+                    index % 2 === 0
+                      ? index === 20
+                        ? classes.extraRoll
+                        : classes.left
+                      : ""
+                  }
+                >
+                  {roll}
+                </td>
+              );
+            })}
+            <td rowSpan="2" id="max-score">
+              {maxScore}
+            </td>
+            <td rowSpan="2" id="total-score">
+              {totalScore}
+            </td>
           </tr>
           <tr>
-            <td colSpan="2" id="f1" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f2" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f3" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f4" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f5" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f6" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f7" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f8" className={classes.frameTotal}></td>
-            <td colSpan="2" id="f9" className={classes.frameTotal}></td>
-            <td colSpan="3" id="f10" className={classes.frameTotal}></td>
+            {currentScores.map((score, index) => {
+              return (
+                <td
+                  colSpan={index === 9 ? 3 : 2}
+                  id={index}
+                  key={index}
+                  className={classes.frameTotal}
+                >
+                  {score ? score : ""}
+                </td>
+              );
+            })}
           </tr>
         </tbody>
       </table>

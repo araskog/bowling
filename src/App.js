@@ -1,11 +1,11 @@
 import Layout from "./components/layout/Layout";
-import Scoring from "./components/scoring/Scoring";
+import ScoringContainer from "./containers/ScoringContainer";
 
 function App() {
   return (
     <div>
       <Layout />
-      <Scoring />
+      <ScoringContainer />
     </div>
   );
 }
