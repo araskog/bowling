@@ -1,0 +1,42 @@
+.scoringContainer {
+  display: flex;
+  margin: auto;
+  padding: 5px;
+  align-items: center;
+}
+
+table {
+  margin: auto;
+  background-color: white;
+  text-align: center;
+  border: 1px solid #231f20;
+  border-radius: 1px;
+  table-layout: fixed;
+  width: 90%;
+}
+
+tr {
+  padding: none;
+  margin: none;
+}
+th {
+  font-size: 0.75rem;
+}
+td {
+  border: 1px solid #77002e;
+  height: 1.5rem;
+  width: 1.75rem;
+}
+
+.left {
+  border-bottom: none;
+  color: black;
+}
+
+.extraRoll {
+  background-color: #e1d9d4;
+}
+
+.frameTotal {
+  border-top: none;
+}
