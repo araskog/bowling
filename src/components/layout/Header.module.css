@@ -13,3 +13,23 @@
   color: white;
   font-weight: bold;
 }
+
+.button {
+  font: inherit;
+  cursor: pointer;
+  background-color: #946c82;
+  border: 1px solid #946c82;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+}
+
+.button:hover,
+.button:active {
+  background-color: #8145c5;
+  border-color: #8145c5;
+}
+
+.button:focus {
+  outline: 0;
+}

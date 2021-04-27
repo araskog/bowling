@@ -8,16 +8,16 @@ const RollsTable = () => {
   const maxScore = useSelector((state) => state.currentMaxScore);
   const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
 
-  // Show strike and spar
+  // Adapt the historicRolls to show strike as X and spar as /
   const transformedHistoricRolls = historicRolls.map((frame) => {
     if (frame.length === 2) {
       if (frame[0] === 10) {
-        return ["X", frame[1]];
+        return ["X", ""];
       } else if (frame[1] === 10) {
         return [frame[0], "X"];
       } else if (frame[0] + frame[1] === 10) {
         return [frame[0], "/"];
-      } else return frame;
+      }
     }
 
     if (frame.length === 3) {
@@ -25,18 +25,14 @@ const RollsTable = () => {
         return ["X", "X", "X"];
       } else if (frame[0] === 10 && frame[1] === 10) {
         return ["X", "X", frame[2]];
-      } else if (frame[2] === 10) {
-        return [frame[0], frame[1], "X"];
+      } else if (frame[0] + frame[1] === 10 && frame[2] === 10) {
+        return [frame[0], "/", "X"];
       } else if (frame[0] + frame[1] === 10) {
         return [frame[0], "/", frame[2]];
-      } else return frame;
+      }
     }
+    return frame;
   });
-
-  /*
-  console.log("All scores", historicRolls);
-  console.log("Transformed scores", transformedHistoricRolls);
-  console.log("Frame scores", scoresPerFrame); */
 
   return (
     <div className={classes.scoringContainer}>
@@ -118,7 +114,7 @@ const RollsTable = () => {
                   key={index}
                   className={classes.frameTotal}
                 >
-                  {score ? score : ""}
+                  {score}
                 </td>
               );
             })}

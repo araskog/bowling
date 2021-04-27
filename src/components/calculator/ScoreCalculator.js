@@ -1,5 +1,21 @@
 const FRAMES = 10;
 
+/**
+ * Calculates the total scores of a bowling game
+ *
+ * @param {array} results of format [
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", "", ""],
+  ]
+ */
 const calcTotalScore = (results) => {
   const rolls = [];
   // Add results (which come in format frame: [roll1, roll2] into a flat array of rolls
