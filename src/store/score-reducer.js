@@ -13,7 +13,7 @@ const initialScoreState = {
     ["", ""],
     ["", "", ""],
   ], // Historic rolls
-  availableRolls: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // What # of pins can player knock down
+  availableRolls: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // # pins available
   currentRoll: 0, // # of rolls (0-20)
   currentFrame: 0, // Current frame (0-9)
   scoresPerFrame: new Array(10).fill(""),
@@ -63,10 +63,17 @@ const scoreReducer = createSlice({
       if (state.currentRoll === 0) {
         state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       } else if (state.currentRoll === 1) {
-        state.availableRolls = state.availableRolls.slice(
-          0,
-          11 - action.payload
-        );
+        if (
+          state.currentFrame === 9 &&
+          state.rolls[state.currentFrame[1] === 10]
+        ) {
+          state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        } else {
+          state.availableRolls = state.availableRolls.slice(
+            0,
+            11 - action.payload
+          );
+        }
       } else if (state.currentRoll === 2) {
         state.availableRolls = [];
       }

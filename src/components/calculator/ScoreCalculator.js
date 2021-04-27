@@ -1,6 +1,7 @@
 const FRAMES = 10;
 
 const calcTotalScore = (results) => {
+  console.log("sent data", results);
   const rolls = [];
   // Add results (which come in format frame: [roll1, roll2] into a flat array of rolls
   results.forEach((frame) =>
@@ -8,6 +9,8 @@ const calcTotalScore = (results) => {
       rolls.push(element);
     })
   );
+
+  console.log("results", results);
 
   // Calculate scores
   let score = 0;
