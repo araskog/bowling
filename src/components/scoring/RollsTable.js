@@ -7,9 +7,20 @@ const RollsTable = () => {
   const historicRolls = useSelector((state) => state.rolls);
   const totalScore = useSelector((state) => state.totalScore);
   const maxScore = useSelector((state) => state.currentMaxScore);
-  const currentScores = useSelector((state) => state.currentScores);
+  const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
 
-  useEffect(() => {}, [historicRolls, totalScore, maxScore]);
+  // Show strike and spar
+  const transformedHistoricRolls = historicRolls.map((frame) => {
+    if (frame[0] === 10) {
+      return ["X", frame[1]];
+    } else if (frame[1] === 10) {
+      return [frame[0], "X"];
+    } else if (frame[0] + frame[1] === 10) {
+      return [frame[0], "/"];
+    } else return frame;
+  });
+
+  console.log("Frame scores", scoresPerFrame);
 
   return (
     <div className={classes.scoringContainer}>
@@ -47,7 +58,7 @@ const RollsTable = () => {
               10
             </th>
             <th scope="col" colSpan="1">
-              Max score
+              Max
             </th>
             <th scope="col" colSpan="1">
               Total
@@ -56,7 +67,8 @@ const RollsTable = () => {
         </thead>
         <tbody>
           <tr>
-            {historicRolls.map((roll, index) => {
+            {transformedHistoricRolls.flat().map((roll, index) => {
+              //console.log(transformedHistoricRolls);
               return (
                 <td
                   id={index}
@@ -81,7 +93,8 @@ const RollsTable = () => {
             </td>
           </tr>
           <tr>
-            {currentScores.map((score, index) => {
+            {scoresPerFrame.map((score, index) => {
+              // console.log(scoresPerFrame);
               return (
                 <td
                   colSpan={index === 9 ? 3 : 2}

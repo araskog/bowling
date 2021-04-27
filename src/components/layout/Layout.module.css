@@ -2,4 +2,13 @@
   margin: 3rem auto;
   width: 90%;
   max-width: 40rem;
+  font-size: 18px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .main {
+    width: 100%;
+    font-size: 10px;
+  }
 }
