@@ -85,11 +85,19 @@ const scoreReducer = createSlice({
       }
       // Third roll in frame (last frame)
       else if (state.currentRoll === 2) {
+        // Current roll is strike or past two were spare
         if (
           action.payload === 10 ||
           state.rolls[9][0] + state.rolls[9][1] === 10
         ) {
           state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        }
+        // First roll was strike
+        else if (state.rolls[9][0] === 10) {
+          state.availableRolls = state.availableRolls.slice(
+            0,
+            11 - action.payload
+          );
         } else {
           // No available action when the user has played two rolls in the last frame
           state.availableRolls = [];

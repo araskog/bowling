@@ -1,4 +1,21 @@
-// Adapt the historicRolls to show strike as X and spar as /
+//
+/**
+ * Adapt the historicRolls to show strike as X and spar as /
+ *
+ * @param {array} historicRolls of format [
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", "", ""],
+  ]
+ */
+
 export const transformRolls = (historicRolls) => {
   return historicRolls.map((frame) => {
     const firstRoll = frame[0];
