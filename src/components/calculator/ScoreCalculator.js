@@ -1,48 +1,54 @@
 const FRAMES = 10;
 
 const calcTotalScore = (results) => {
-  console.log("sent data", results);
   const rolls = [];
   // Add results (which come in format frame: [roll1, roll2] into a flat array of rolls
   results.forEach((frame) =>
     frame.forEach((element) => {
-      rolls.push(element);
+      if (element === "") {
+        rolls.push(0);
+      } else {
+        rolls.push(element);
+      }
     })
   );
 
-  console.log("results", results);
-
   // Calculate scores
   let score = 0;
-  for (let i = 0, frame = 0; i < rolls.length, frame < FRAMES; frame++) {
-    // Check if it's the last frame (and three strikes in it)
-    const isLastStrikes =
-      rolls[i] === 10 && rolls[i + 1] === 10 && rolls[i + 2] === 10;
+  for (
+    let rollNo = 0, frame = 0;
+    rollNo < rolls.length, frame < FRAMES;
+    frame++
+  ) {
     // Check if it's a strike
-    const isStrike = rolls[i] === 10 && rolls[i + 1] === 0;
+    const isStrike = rolls[rollNo] === 10;
     // Check if it's a spare
-    const isSpare = rolls[i] + rolls[i + 1] === 10;
-    if (isLastStrikes) {
-      score += 30;
-    } else if (isStrike) {
+    const isSpare = rolls[rollNo] + rolls[rollNo + 1] === 10;
+    if (isStrike) {
       score += 10;
-      // If last frame
-      if (rolls[i + 2] === 10) {
-        score += rolls[i + 2] + rolls[i + 4];
+      // Strike in the last frame
+      if (rollNo === 18) {
+        score += rolls[rollNo + 1] + rolls[rollNo + 2];
       } else {
-        score += rolls[i + 2] + rolls[i + 3];
+        // Two strikes in a row, must jump the next roll which will be 0
+        if (rolls[rollNo + 2] === 10) {
+          score += rolls[rollNo + 2] + rolls[rollNo + 4];
+        } // One strike, add the two following rolls
+        else {
+          score += rolls[rollNo + 2] + rolls[rollNo + 3];
+        }
+        rollNo += 2;
       }
-      i += 2;
     } else if (isSpare) {
       score += 10;
       // Add the first score in the next frame
-      score += parseInt(rolls[i + 2]) || 0; // Add 0 if no value yet
-      i += 2; // Move two steps forward with spare
+      score += rolls[rollNo + 2]; // Add 0 if no value yet
+      rollNo += 2; // Move two steps forward with spare
     } else {
       // No strike nor spare
-      score += parseInt(rolls[i]) || 0;
-      score += parseInt(rolls[i + 1] || 0);
-      i += 2; //
+      score += rolls[rollNo];
+      score += rolls[rollNo + 1];
+      rollNo += 2; //
     }
   }
   return score;

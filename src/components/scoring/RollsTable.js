@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import classes from "./RollsTable.module.css";
@@ -10,17 +9,34 @@ const RollsTable = () => {
   const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
 
   // Show strike and spar
-  const transformedHistoricRolls = historicRolls.map((frame) => {
-    if (frame[0] === 10) {
-      return ["X", frame[1]];
-    } else if (frame[1] === 10) {
-      return [frame[0], "X"];
-    } else if (frame[0] + frame[1] === 10) {
-      return [frame[0], "/"];
-    } else return frame;
+  const transformedHistoricRolls = historicRolls.forEach((frame) => {
+    if (frame.length === 2) {
+      if (frame[0] === 10) {
+        return ["X", frame[1]];
+      } else if (frame[1] === 10) {
+        return [frame[0], "X"];
+      } else if (frame[0] + frame[1] === 10) {
+        return [frame[0], "/"];
+      } else return frame;
+    }
+
+    if (frame.length === 3) {
+      if (frame[0] === 10 && frame[1] === 10 && frame[2] === 10) {
+        return ["X", "X", "X"];
+      } else if (frame[0] === 10 && frame[1] === 10) {
+        return ["X", "X", frame[2]];
+      } else if (frame[2] === 10) {
+        return [frame[0], frame[1], "X"];
+      } else if (frame[0] + frame[1] === 10) {
+        return [frame[0], "/", frame[2]];
+      } else return frame;
+    }
   });
 
-  console.log("Frame scores", scoresPerFrame);
+  /*
+  console.log("All scores", historicRolls);
+  console.log("Transformed scores", transformedHistoricRolls);
+  console.log("Frame scores", scoresPerFrame); */
 
   return (
     <div className={classes.scoringContainer}>
@@ -68,7 +84,7 @@ const RollsTable = () => {
         <tbody>
           <tr>
             {transformedHistoricRolls.flat().map((roll, index) => {
-              //console.log(transformedHistoricRolls);
+              //  console.log("transformed", transformedHistoricRolls);
               return (
                 <td
                   id={index}
