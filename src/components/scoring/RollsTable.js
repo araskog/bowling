@@ -9,7 +9,7 @@ const RollsTable = () => {
   const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
 
   // Show strike and spar
-  const transformedHistoricRolls = historicRolls.forEach((frame) => {
+  const transformedHistoricRolls = historicRolls.map((frame) => {
     if (frame.length === 2) {
       if (frame[0] === 10) {
         return ["X", frame[1]];
