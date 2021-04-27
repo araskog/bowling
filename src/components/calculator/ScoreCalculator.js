@@ -69,7 +69,7 @@ const calcTotalScore = (results) => {
     }
     frameScores[frame] = score;
   }
-  return [score, frameScores];
+  return { score: score, frameScores: frameScores };
 };
 
 export default calcTotalScore;

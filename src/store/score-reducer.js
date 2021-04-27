@@ -18,7 +18,6 @@ const initialScoreState = {
   currentRoll: 0, // # of rolls in a frame (0-3)
   currentFrame: 0, // Current frame (0-9)
   scoresPerFrame: new Array(10).fill(""), // Score per frame
-  currentMaxScore: 300,
   totalScore: 0,
 };
 
@@ -34,8 +33,8 @@ const scoreReducer = createSlice({
       // Add the new score to the historic rolls array
       state.rolls[state.currentFrame][state.currentRoll] = newScore;
       // Update total score
-      state.totalScore = calcTotalScore(state.rolls)[0];
-      const frameScores = calcTotalScore(state.rolls)[1];
+      state.totalScore = calcTotalScore(state.rolls).score;
+      const frameScores = calcTotalScore(state.rolls).frameScores;
 
       // Store only scores until current frame as results. Future (and past) scores will update
       frameScores.splice(state.currentFrame + 1);
@@ -43,19 +42,7 @@ const scoreReducer = createSlice({
         frameScores.push("");
       }
 
-      /**
-       *
-       * @todo Add calculation of "live" max score.
-       *
-       */
-      // state.currentMaxScore = 300;
-
-      /**
-       *
-       * @todo Correct the scoring calculation per frame (scoresPerFrame). Only aggregated and not retroactively updated.
-       *
-       */
-      // Update the current roll within the frame
+      // Update what roll the player is on in the frame, first = 0, second = 1, third = 2
       if (state.currentRoll === 0) {
         state.currentRoll++;
       } else if (state.currentRoll === 1 && state.currentFrame === 9) {
@@ -67,17 +54,13 @@ const scoreReducer = createSlice({
 
         // Begin with roll 0 at the next frame
         state.currentRoll = 0;
-        // Update frame unless it's the last frame
+        // Move to next frame unless it's the last frame
         if (state.currentRoll !== 2) {
           state.currentFrame++;
         }
       }
     },
-    /**
-     *
-     * @todo Correct the calc for whether to show rolls on the third roll of last frame or not. Now it gives the user opportunity to enter extra data (although it's not included in total score)
-     *
-     */
+
     // Update the number of pins available for player
     calcAvailableRolls(state, action) {
       // First roll in frame
@@ -85,9 +68,8 @@ const scoreReducer = createSlice({
         state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       }
       // Second roll in frame
-      else if (state.currentRoll === 1 || state.currentRoll === 2) {
-        // The last frame should allow for two more rolls after strike
-        // One more roll after spare
+      else if (state.currentRoll === 1) {
+        // The last frame should allow for more rolls after strike or spare
         if (
           state.currentFrame === 9 &&
           (action.payload === 10 ||
@@ -103,11 +85,23 @@ const scoreReducer = createSlice({
       }
       // Third roll in frame (last frame)
       else if (state.currentRoll === 2) {
-        state.availableRolls = [];
+        if (
+          action.payload === 10 ||
+          state.rolls[9][0] + state.rolls[9][1] === 10
+        ) {
+          state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        } else {
+          // No available action when the user has played two rolls in the last frame
+          state.availableRolls = [];
+          // Update the scores per frame
+          state.scoresPerFrame = calcTotalScore(state.rolls).frameScores;
+          state.gameEnded = true;
+        }
       }
-      // No available action when the game ended
+      // No available action when the game ended with three strikes
       if (state.currentFrame === 10) {
         state.availableRolls = [];
+        state.gameEnded = true;
       }
     },
 

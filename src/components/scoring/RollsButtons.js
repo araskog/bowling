@@ -1,5 +1,6 @@
 import { scoreActions } from "../../store/score-reducer";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 import Button from "./Button";
 import classes from "./RollsButtons.module.css";
@@ -8,7 +9,9 @@ const RollsButtons = () => {
   const dispatch = useDispatch();
 
   const availableRolls = useSelector((state) => state.availableRolls);
+  const gameEnded = useSelector((state) => state.gameEnded);
 
+  // Update state with the new roll value
   const addRollHandler = (e) => {
     const rollValue = parseInt(e.target.outerText);
     dispatch(
@@ -19,9 +22,25 @@ const RollsButtons = () => {
     dispatch(scoreActions.calcAvailableRolls(rollValue));
   };
 
+  // Update the available rolls without user input if 0 pins are available
+  useEffect(() => {
+    if (availableRolls.length === 1) {
+      dispatch(
+        scoreActions.addRoll({
+          value: 0,
+        })
+      );
+      dispatch(scoreActions.calcAvailableRolls(0));
+    }
+  }, [dispatch, availableRolls]);
+
   return (
     <div className={classes.inputContainer}>
-      <h2>Insert number of pinns knocked down 💥</h2>
+      <h2>
+        {gameEnded
+          ? "Game ended, play again?"
+          : "Insert number of pinns knocked down 💥"}
+      </h2>
       <div id="rolls" className={classes.buttonsContainer}>
         {availableRolls.map((roll) => {
           return (

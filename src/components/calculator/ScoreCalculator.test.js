@@ -15,7 +15,7 @@ test("Calculate total scores correctly", () => {
         [0, 0],
         [0, 0, 0],
       ],
-      value: 0,
+      total: 0,
     },
     {
       scores: [
@@ -30,7 +30,7 @@ test("Calculate total scores correctly", () => {
         [1, 0],
         [1, 0],
       ],
-      value: 10,
+      total: 10,
     },
     {
       scores: [
@@ -45,7 +45,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
         ["", "", ""],
       ],
-      value: 38,
+      total: 38,
     },
     {
       scores: [
@@ -60,7 +60,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
         ["", ""],
       ],
-      value: 10,
+      total: 10,
     },
     {
       scores: [
@@ -75,7 +75,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
         ["", ""],
       ],
-      value: 24,
+      total: 24,
     },
     {
       scores: [
@@ -90,7 +90,7 @@ test("Calculate total scores correctly", () => {
         [8, 2],
         [8, 2, 8],
       ],
-      value: 180,
+      total: 180,
     },
     {
       scores: [
@@ -105,7 +105,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
         ["", ""],
       ],
-      value: 10,
+      total: 10,
     },
     {
       scores: [
@@ -120,7 +120,7 @@ test("Calculate total scores correctly", () => {
         [0, 0],
         [0, 0],
       ],
-      value: 18,
+      total: 18,
     },
     {
       scores: [
@@ -135,7 +135,7 @@ test("Calculate total scores correctly", () => {
         [0, 0],
         [0, 0],
       ],
-      value: 22,
+      total: 22,
     },
     {
       scores: [
@@ -150,7 +150,7 @@ test("Calculate total scores correctly", () => {
         [10, 0],
         [10, 10, 10],
       ],
-      value: 300,
+      total: 300,
     },
     {
       scores: [
@@ -165,14 +165,15 @@ test("Calculate total scores correctly", () => {
         [10, 0],
         [10, "", ""],
       ],
-      value: 270,
+      total: 270,
     },
   ];
 
-  tests.forEach(({ scores, value }) => {
+  // Check that total score is correct
+  tests.forEach(({ scores, total }) => {
     const totalScore = calcTotalScore(scores);
     // Print out scores if errouneus
-    console.assert(totalScore === value, scores);
-    expect(totalScore).toBe(value);
+    console.assert(totalScore.score === total, scores);
+    expect(totalScore.score).toBe(total);
   });
 });
