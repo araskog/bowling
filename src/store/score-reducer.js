@@ -33,9 +33,15 @@ const scoreReducer = createSlice({
 
       // Add the new score to the historic rolls array
       state.rolls[state.currentFrame][state.currentRoll] = newScore;
-
       // Update total score
-      state.totalScore = calcTotalScore(state.rolls);
+      state.totalScore = calcTotalScore(state.rolls)[0];
+      const frameScores = calcTotalScore(state.rolls)[1];
+
+      // Store only scores until current frame as results. Future (and past) scores will update
+      frameScores.splice(state.currentFrame + 1);
+      for (let i = 0; i < 9 - state.currentFrame; i++) {
+        frameScores.push("");
+      }
 
       /**
        *
@@ -57,7 +63,8 @@ const scoreReducer = createSlice({
         state.currentRoll++;
       } else {
         // Update the total score per frame
-        state.scoresPerFrame[state.currentFrame] = state.totalScore;
+        state.scoresPerFrame = frameScores;
+
         // Begin with roll 0 at the next frame
         state.currentRoll = 0;
         // Update frame unless it's the last frame
@@ -86,7 +93,6 @@ const scoreReducer = createSlice({
           (action.payload === 10 ||
             state.rolls[9][0] + state.rolls[9][1] === 10)
         ) {
-          console.log("spärr eller strike på sista");
           state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         } else {
           state.availableRolls = state.availableRolls.slice(

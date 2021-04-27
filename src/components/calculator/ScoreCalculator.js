@@ -1,7 +1,7 @@
 const FRAMES = 10;
 
 /**
- * Calculates the total scores of a bowling game
+ * Calculates total scores and scores per frame of a bowling game
  *
  * @param {array} results of format [
     ["", ""],
@@ -31,6 +31,7 @@ const calcTotalScore = (results) => {
 
   // Calculate scores
   let score = 0;
+  let frameScores = [];
   for (
     let rollNo = 0, frame = 0;
     rollNo < rolls.length, frame < FRAMES;
@@ -66,8 +67,9 @@ const calcTotalScore = (results) => {
       score += rolls[rollNo + 1];
       rollNo += 2; //
     }
+    frameScores[frame] = score;
   }
-  return score;
+  return [score, frameScores];
 };
 
 export default calcTotalScore;
