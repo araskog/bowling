@@ -8,11 +8,11 @@ const isTwoStrikesInARow = (rollIndex, rolls) => rolls[rollIndex + 2] === 10;
 const jumpTwoIndexes = (rollNo) => (rollNo += 2);
 
 /**
- * Calculates total scores and scores per frame of a bowling game
+ * Calculates total scores and scores per frame (for all frames) of a bowling game
  *
  * @param {array} scorecard - including one array of scores per bowling frame
  */
-const calcTotalScore = (scorecard) => {
+export const calcTotalScore = (scorecard) => {
   // Create a flattened array of all rolls
   const rolls = scorecard
     .map((frame) =>
@@ -35,10 +35,9 @@ const calcTotalScore = (scorecard) => {
       // Last frame
       if (rollNo === FIRST_IN_LAST_FRAME) {
         score += rolls[rollNo + 1] + rolls[rollNo + 2];
-      }
-      // Frame 1-9
-      else {
-        if (isTwoStrikesInARow(rollNo, rolls)) {
+        rollNo++;
+      } else {
+        if (isTwoStrikesInARow(rollNo, rolls) && frame !== 8) {
           score += rolls[rollNo + 2] + rolls[rollNo + 4];
         } else {
           score += rolls[rollNo + 2] + rolls[rollNo + 3];
@@ -64,4 +63,17 @@ const calcTotalScore = (scorecard) => {
   return { score: score, frameScores: frameScores };
 };
 
-export default calcTotalScore;
+/**
+ * Returns frame scores up until the current frame
+ *
+ * @param {array} rolls -  array of scores per bowling frame
+ * @param {currentFrame} - the current frame index in rolls
+ */
+export const getFrameScores = (rolls, currentFrame) => {
+  const frameScores = calcTotalScore(rolls).frameScores;
+  frameScores.splice(currentFrame + 1);
+  for (let i = 0; i < 9 - currentFrame; i++) {
+    frameScores.push("");
+  }
+  return frameScores;
+};

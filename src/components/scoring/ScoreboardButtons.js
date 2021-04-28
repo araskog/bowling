@@ -2,6 +2,8 @@ import { scoreActions } from "../../store/score-reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
+import calcTotalScore from "../calculator/scoreCalculator";
+
 import Button from "./Button";
 import classes from "./ScoreboardButtons.module.css";
 

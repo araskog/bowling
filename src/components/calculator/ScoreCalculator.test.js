@@ -1,4 +1,4 @@
-import calcTotalScore from "./scoreCalculator";
+import { calcTotalScore } from "./scoreCalculator";
 
 test("Total score and accumulated score per frame are correct.", () => {
   const tests = [
@@ -193,6 +193,22 @@ test("Total score and accumulated score per frame are correct.", () => {
       ],
       total: 234,
       accFrameScores: [30, 58, 76, 84, 114, 144, 174, 204, 224, 234],
+    },
+    {
+      scores: [
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 8, 0],
+      ],
+      total: 286,
+      accFrameScores: [30, 60, 90, 120, 150, 180, 210, 240, 268, 286],
     },
   ];
 
