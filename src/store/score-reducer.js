@@ -59,8 +59,6 @@ const scoreReducer = createSlice({
         }
       }
     },
-
-    // Update the number of pins available for player
     calcAvailableRolls(state, action) {
       const calcPinsRemaining = (availableRolls, currentPins) => {
         return availableRolls.slice(0, 11 - currentPins);
