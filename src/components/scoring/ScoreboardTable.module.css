@@ -61,13 +61,20 @@ td {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .scoringContainer {
-    width: 80%;
+    width: 70%;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .scoringContainer {
-    width: 60%;
+    width: 55%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1600px and up) */
+@media only screen and (min-width: 1600px) {
+  .scoringContainer {
+    width: 40%;
   }
 }
