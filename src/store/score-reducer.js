@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import calcTotalScore from "../components/calculator/ScoreCalculator";
+import calcTotalScore from "../components/calculator/scoreCalculator";
 
 const initialScoreState = {
   rolls: [
@@ -19,6 +19,8 @@ const initialScoreState = {
   currentFrame: 0, // Current frame (0-9)
   scoresPerFrame: new Array(10).fill(""), // Score per frame
   totalScore: 0,
+  gameEnded: false,
+  zeroPins: false,
 };
 
 const scoreReducer = createSlice({
@@ -51,7 +53,6 @@ const scoreReducer = createSlice({
       } else {
         // Update the total score per frame
         state.scoresPerFrame = frameScores;
-
         // Begin with roll 0 at the next frame
         state.currentRoll = 0;
         // Move to next frame unless it's the last frame
@@ -66,6 +67,7 @@ const scoreReducer = createSlice({
       // First roll in frame
       if (state.currentRoll === 0) {
         state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        state.zeroPins = false;
       }
       // Second roll in frame
       else if (state.currentRoll === 1) {
@@ -76,11 +78,15 @@ const scoreReducer = createSlice({
             state.rolls[9][0] + state.rolls[9][1] === 10)
         ) {
           state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          state.zeroPins = false;
         } else {
           state.availableRolls = state.availableRolls.slice(
             0,
             11 - action.payload
           );
+          if (state.availableRolls.length === 1) {
+            state.zeroPins = true;
+          }
         }
       }
       // Third roll in frame (last frame)
@@ -91,6 +97,7 @@ const scoreReducer = createSlice({
           state.rolls[9][0] + state.rolls[9][1] === 10
         ) {
           state.availableRolls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          state.zeroPins = false;
         }
         // First roll was strike
         else if (state.rolls[9][0] === 10) {
@@ -98,6 +105,9 @@ const scoreReducer = createSlice({
             0,
             11 - action.payload
           );
+          if (state.availableRolls.length === 1) {
+            state.zeroPins = true;
+          }
         } else {
           // No available action when the user has played two rolls in the last frame
           state.availableRolls = [];
@@ -115,6 +125,7 @@ const scoreReducer = createSlice({
 
     newGame(state) {
       // Resetting all state values
+
       state.rolls = [
         ["", ""],
         ["", ""],
@@ -133,6 +144,8 @@ const scoreReducer = createSlice({
       state.scoresPerFrame = new Array(10).fill("");
       state.currentMaxScore = 300;
       state.totalScore = 0;
+      state.gameEnded = false;
+      state.zeroPins = false;
     },
   },
 });

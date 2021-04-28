@@ -1,6 +1,6 @@
-import calcTotalScore from "./ScoreCalculator";
+import calcTotalScore from "./scoreCalculator";
 
-test("Calculate total scores correctly", () => {
+test("Total score and accumulated score per frame are correct.", () => {
   const tests = [
     {
       scores: [
@@ -16,6 +16,7 @@ test("Calculate total scores correctly", () => {
         [0, 0, 0],
       ],
       total: 0,
+      accFrameScores: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
     {
       scores: [
@@ -31,6 +32,7 @@ test("Calculate total scores correctly", () => {
         [1, 0],
       ],
       total: 10,
+      accFrameScores: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     },
     {
       scores: [
@@ -46,6 +48,7 @@ test("Calculate total scores correctly", () => {
         ["", "", ""],
       ],
       total: 38,
+      accFrameScores: [20, 34, 38, 38, 38, 38, 38, 38, 38, 38],
     },
     {
       scores: [
@@ -61,11 +64,12 @@ test("Calculate total scores correctly", () => {
         ["", ""],
       ],
       total: 10,
+      accFrameScores: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
     },
     {
       scores: [
         [7, 3],
-        [7, ""],
+        [7, 0],
         ["", ""],
         ["", ""],
         ["", ""],
@@ -76,6 +80,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
       ],
       total: 24,
+      accFrameScores: [17, 24, 24, 24, 24, 24, 24, 24, 24, 24],
     },
     {
       scores: [
@@ -91,11 +96,12 @@ test("Calculate total scores correctly", () => {
         [8, 2, 8],
       ],
       total: 180,
+      accFrameScores: [18, 36, 54, 72, 90, 108, 126, 144, 162, 180],
     },
     {
       scores: [
         [10, 0],
-        ["", ""],
+        [0, 0],
         ["", ""],
         ["", ""],
         ["", ""],
@@ -106,6 +112,7 @@ test("Calculate total scores correctly", () => {
         ["", ""],
       ],
       total: 10,
+      accFrameScores: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
     },
     {
       scores: [
@@ -121,6 +128,7 @@ test("Calculate total scores correctly", () => {
         [0, 0],
       ],
       total: 18,
+      accFrameScores: [12, 18, 18, 18, 18, 18, 18, 18, 18, 18],
     },
     {
       scores: [
@@ -136,6 +144,7 @@ test("Calculate total scores correctly", () => {
         [0, 0],
       ],
       total: 22,
+      accFrameScores: [16, 22, 22, 22, 22, 22, 22, 22, 22, 22],
     },
     {
       scores: [
@@ -151,6 +160,7 @@ test("Calculate total scores correctly", () => {
         [10, 10, 10],
       ],
       total: 300,
+      accFrameScores: [30, 60, 90, 120, 150, 180, 210, 240, 270, 300],
     },
     {
       scores: [
@@ -163,17 +173,20 @@ test("Calculate total scores correctly", () => {
         [10, 0],
         [10, 0],
         [10, 0],
-        [10, "", ""],
+        [10, 0, 0],
       ],
       total: 270,
+      accFrameScores: [30, 60, 90, 120, 150, 180, 210, 240, 260, 270],
     },
   ];
 
-  // Check that total score is correct
+  // Check total score
   tests.forEach(({ scores, total }) => {
-    const totalScore = calcTotalScore(scores);
-    // Print out scores if errouneus
-    console.assert(totalScore.score === total, scores);
-    expect(totalScore.score).toBe(total);
+    expect(calcTotalScore(scores).score).toBe(total);
+  });
+
+  // Check accumulated score per frame
+  tests.forEach(({ scores, accFrameScores }) => {
+    expect(calcTotalScore(scores).frameScores).toEqual(accFrameScores);
   });
 });

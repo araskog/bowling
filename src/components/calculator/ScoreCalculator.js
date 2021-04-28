@@ -3,7 +3,7 @@ const FRAMES = 10;
 /**
  * Calculates total scores and scores per frame of a bowling game
  *
- * @param {array} results of format [
+ * @param {array} scorecard of format [
     ["", ""],
     ["", ""],
     ["", ""],
@@ -16,10 +16,10 @@ const FRAMES = 10;
     ["", "", ""],
   ]
  */
-const calcTotalScore = (results) => {
+const calcTotalScore = (scorecard) => {
   const rolls = [];
-  // Add results (which come in format frame: [roll1, roll2] into a flat array of rolls
-  results.forEach((frame) =>
+  // Add results into a flat array of all rolls
+  scorecard.forEach((frame) =>
     frame.forEach((element) => {
       if (element === "") {
         rolls.push(0);
@@ -69,6 +69,7 @@ const calcTotalScore = (results) => {
     }
     frameScores[frame] = score;
   }
+  // console.log(frameScores);
   return { score: score, frameScores: frameScores };
 };
 

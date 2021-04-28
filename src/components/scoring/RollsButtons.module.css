@@ -20,3 +20,10 @@ h2 {
   font-size: 1rem;
   color: #423f41;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .inputContainer {
+    padding: 0.5rem;
+  }
+}

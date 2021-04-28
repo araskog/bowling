@@ -10,6 +10,7 @@ const RollsButtons = () => {
 
   const availableRolls = useSelector((state) => state.availableRolls);
   const gameEnded = useSelector((state) => state.gameEnded);
+  const zeroPins = useSelector((state) => state.zeroPins);
 
   // Update state with the new roll value
   const addRollHandler = (e) => {
@@ -24,7 +25,7 @@ const RollsButtons = () => {
 
   // Update the available rolls without user input if 0 pins are available
   useEffect(() => {
-    if (availableRolls.length === 1) {
+    if (zeroPins) {
       dispatch(
         scoreActions.addRoll({
           value: 0,
@@ -32,14 +33,14 @@ const RollsButtons = () => {
       );
       dispatch(scoreActions.calcAvailableRolls(0));
     }
-  }, [dispatch, availableRolls]);
+  }, [dispatch, zeroPins]);
 
   return (
     <div className={classes.inputContainer}>
       <h2>
         {gameEnded
           ? "Game ended, play again?"
-          : "Insert number of pinns knocked down 💥"}
+          : "Select number of pins knocked down 💥"}
       </h2>
       <div id="rolls" className={classes.buttonsContainer}>
         {availableRolls.map((roll) => {

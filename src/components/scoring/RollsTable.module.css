@@ -1,5 +1,5 @@
 .scoringContainer {
-  display: flex;
+  display: block;
   margin: auto;
   padding: 5px;
   align-items: center;
