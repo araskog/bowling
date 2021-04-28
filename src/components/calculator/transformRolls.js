@@ -1,6 +1,5 @@
-//
 /**
- * Adapt the historicRolls to show strike as X and spar as /
+ * Scores are transformed to the scoreboard. Strikes = X, spares = / and no 0 after a strike
  *
  * @param {array} historicRolls - including one array of scores per bowling frame
  */
@@ -15,7 +14,7 @@ export const transformRolls = (historicRolls) => {
       if (firstRoll === 10) {
         return ["X", ""];
       } else if (secondRoll === 10) {
-        return [firstRoll, "X"];
+        return [firstRoll, "/"];
       } else if (firstRoll + secondRoll === 10) {
         return [firstRoll, "/"];
       }

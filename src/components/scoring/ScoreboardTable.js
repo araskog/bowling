@@ -7,7 +7,6 @@ const ScoreboardTable = () => {
   const historicRolls = useSelector((state) => state.rolls);
   const totalScore = useSelector((state) => state.totalScore);
   const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
-
   const transformedHistoricRolls = transformRolls(historicRolls); // Show strike as X, spar as /
 
   return (
@@ -18,7 +17,7 @@ const ScoreboardTable = () => {
             {scoresPerFrame.map((score, index) => {
               return (
                 <th key={index} scope="col" colSpan={index === 9 ? 3 : 2}>
-                  {index}
+                  {index + 1}
                 </th>
               );
             })}
