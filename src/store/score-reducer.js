@@ -36,6 +36,7 @@ const scoreReducer = createSlice({
   name: "score",
   initialState: initialScoreState,
   reducers: {
+    // Update scores with the action.payload.value
     addRoll(state, action) {
       if (state.gameEnded) return;
       // Add the new score to the historic rolls array
@@ -62,10 +63,9 @@ const scoreReducer = createSlice({
         }
       }
     },
-
+    // Check the number of pins available with the current pins knocked down (action.payload)
     calcAvailableRolls(state, action) {
-      // Check the number of pins available with the current pins knocked down (action.payload).
-      const { availableRolls, zeroPins, gameEnded } = getAvailableRolls(
+      const { availableRolls, gameEnded } = getAvailableRolls(
         state.currentRoll,
         state.rolls,
         action.payload,
@@ -73,7 +73,7 @@ const scoreReducer = createSlice({
       );
 
       state.availableRolls = availableRolls;
-      state.zeroPins = zeroPins;
+      state.zeroPins = availableRolls.length === 1;
       state.gameEnded = gameEnded;
 
       if (state.gameEnded) {

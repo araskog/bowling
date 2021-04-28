@@ -106,6 +106,32 @@ test("Scores are transformed correctly to the scoreboard. Strikes = X, spares = 
         ["X", 0, 0],
       ],
     },
+    {
+      scores: [
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 3, 7],
+      ],
+      transformedScores: [
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", ""],
+        ["X", 3, "/"],
+      ],
+    },
   ];
 
   tests.forEach(({ scores, transformedScores }) => {

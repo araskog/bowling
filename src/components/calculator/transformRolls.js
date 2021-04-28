@@ -25,6 +25,8 @@ export const transformRolls = (historicRolls) => {
         return ["X", "X", "X"];
       } else if (firstRoll === 10 && secondRoll === 10) {
         return ["X", "X", thirdRoll];
+      } else if (firstRoll === 10 && secondRoll + thirdRoll === 10) {
+        return ["X", secondRoll, "/"];
       } else if (firstRoll === 10) {
         return ["X", secondRoll, thirdRoll];
       } else if (firstRoll + secondRoll === 10 && thirdRoll === 10) {
