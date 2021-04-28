@@ -1,75 +1,66 @@
 const FRAMES = 10;
+const FIRST_IN_LAST_FRAME = 18;
+
+const isStrike = (rollIndex, rolls) => rolls[rollIndex] === 10;
+const isSpare = (rollIndex, rolls) =>
+  rolls[rollIndex] + rolls[rollIndex + 1] === 10;
+const isTwoStrikesInARow = (rollIndex, rolls) => rolls[rollIndex + 2] === 10;
+const jumpTwoIndexes = (rollNo) => (rollNo += 2);
 
 /**
  * Calculates total scores and scores per frame of a bowling game
  *
- * @param {array} scorecard of format [
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", "", ""],
-  ]
+ * @param {array} scorecard - including one array of scores per bowling frame
  */
 const calcTotalScore = (scorecard) => {
-  const rolls = [];
-  // Add results into a flat array of all rolls
-  scorecard.forEach((frame) =>
-    frame.forEach((element) => {
-      if (element === "") {
-        rolls.push(0);
-      } else {
-        rolls.push(element);
-      }
-    })
-  );
+  // Create a flattened array of all rolls
+  const rolls = scorecard
+    .map((frame) =>
+      frame.map((element) => {
+        if (element === "") return 0;
+        else return element;
+      })
+    )
+    .flat();
 
-  // Calculate scores
-  let score = 0;
-  let frameScores = [];
-  for (
-    let rollNo = 0, frame = 0;
-    rollNo < rolls.length, frame < FRAMES;
-    frame++
-  ) {
-    // Check if it's a strike
-    const isStrike = rolls[rollNo] === 10;
-    // Check if it's a spare
-    const isSpare = rolls[rollNo] + rolls[rollNo + 1] === 10;
-    if (isStrike) {
+  let score = 0; // current total score
+  let frameScores = []; // current score per frame
+  let rollNo = 0; // current index in the array of all rolls
+
+  // Calculate scores for all frames
+  for (let frame = 0; frame < FRAMES; frame++) {
+    // Strike in frame
+    if (isStrike(rollNo, rolls)) {
       score += 10;
-      // Strike in the last frame
-      if (rollNo === 18) {
+      // Last frame
+      if (rollNo === FIRST_IN_LAST_FRAME) {
         score += rolls[rollNo + 1] + rolls[rollNo + 2];
-      } else {
-        // Two strikes in a row, must jump the next roll which will be 0
-        if (rolls[rollNo + 2] === 10) {
+      }
+      // Frame 1-9
+      else {
+        if (isTwoStrikesInARow(rollNo, rolls)) {
           score += rolls[rollNo + 2] + rolls[rollNo + 4];
-        } // One strike, add the two following rolls
-        else {
+        } else {
           score += rolls[rollNo + 2] + rolls[rollNo + 3];
         }
-        rollNo += 2;
+        rollNo = jumpTwoIndexes(rollNo);
       }
-    } else if (isSpare) {
+    }
+    // Spare in frame
+    else if (isSpare(rollNo, rolls)) {
       score += 10;
-      // Add the first score in the next frame
-      score += rolls[rollNo + 2]; // Add 0 if no value yet
-      rollNo += 2; // Move two steps forward with spare
-    } else {
-      // No strike nor spare
+      score += rolls[rollNo + 2];
+      rollNo = jumpTwoIndexes(rollNo);
+    }
+    // Neither strike nor spare in frame
+    else {
       score += rolls[rollNo];
       score += rolls[rollNo + 1];
-      rollNo += 2; //
+      rollNo = jumpTwoIndexes(rollNo);
     }
+    // Add the score to the current frame
     frameScores[frame] = score;
   }
-  // console.log(frameScores);
   return { score: score, frameScores: frameScores };
 };
 

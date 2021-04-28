@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import Button from "./Button";
-import classes from "./RollsButtons.module.css";
+import classes from "./ScoreboardButtons.module.css";
 
-const RollsButtons = () => {
+const ScoreboardButtons = () => {
   const dispatch = useDispatch();
 
   const availableRolls = useSelector((state) => state.availableRolls);
@@ -58,4 +58,4 @@ const RollsButtons = () => {
   );
 };
 
-export default RollsButtons;
+export default ScoreboardButtons;

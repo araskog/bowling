@@ -2,18 +2,7 @@
 /**
  * Adapt the historicRolls to show strike as X and spar as /
  *
- * @param {array} historicRolls of format [
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", ""],
-    ["", "", ""],
-  ]
+ * @param {array} historicRolls - including one array of scores per bowling frame
  */
 
 export const transformRolls = (historicRolls) => {

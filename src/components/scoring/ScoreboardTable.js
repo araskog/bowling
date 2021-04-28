@@ -1,15 +1,14 @@
 import { useSelector } from "react-redux";
 
-import { transformRolls } from "./transformRolls";
-import classes from "./RollsTable.module.css";
+import { transformRolls } from "../calculator/transformRolls";
+import classes from "./ScoreboardTable.module.css";
 
-const RollsTable = () => {
+const ScoreboardTable = () => {
   const historicRolls = useSelector((state) => state.rolls);
   const totalScore = useSelector((state) => state.totalScore);
   const scoresPerFrame = useSelector((state) => state.scoresPerFrame);
 
-  // Adapt the historicRolls to show strike as X and spar as /
-  const transformedHistoricRolls = transformRolls(historicRolls);
+  const transformedHistoricRolls = transformRolls(historicRolls); // Show strike as X, spar as /
 
   return (
     <div className={classes.scoringContainer}>
@@ -31,7 +30,6 @@ const RollsTable = () => {
         <tbody>
           <tr>
             {transformedHistoricRolls.flat().map((roll, index) => {
-              //  console.log("transformed", transformedHistoricRolls);
               return (
                 <td
                   id={index}
@@ -72,4 +70,4 @@ const RollsTable = () => {
   );
 };
 
-export default RollsTable;
+export default ScoreboardTable;

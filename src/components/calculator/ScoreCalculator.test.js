@@ -178,6 +178,22 @@ test("Total score and accumulated score per frame are correct.", () => {
       total: 270,
       accFrameScores: [30, 60, 90, 120, 150, 180, 210, 240, 260, 270],
     },
+    {
+      scores: [
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [8, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0],
+        [10, 0, 0],
+      ],
+      total: 234,
+      accFrameScores: [30, 58, 76, 84, 114, 144, 174, 204, 224, 234],
+    },
   ];
 
   // Check total score
