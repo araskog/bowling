@@ -30,7 +30,7 @@ const initialScoreState = {
   zeroPins: false, // True if all pins have been knocked down in a frame
 };
 
-// I'm uing Redux Toolkit so the updates of state in this reducer do not mutate the state
+// Using Redux Toolkit - updates of state in this reducer do not mutate the state
 const scoreReducer = createSlice({
   name: "score",
   initialState: initialScoreState,
@@ -62,60 +62,56 @@ const scoreReducer = createSlice({
 
     // Update the number of pins available for player
     calcAvailableRolls(state, action) {
-      // First roll in frame
-      if (state.currentRoll === 0) {
+      const calcPinsRemaining = (availableRolls, currentPins) => {
+        return availableRolls.slice(0, 11 - currentPins);
+      };
+
+      const lastFrameSpare = state.rolls[9][0] + state.rolls[9][1] === 10;
+      const lastFrameFirstStrike = state.rolls[9][0] === 10;
+      const currentRollIsStrike = action.payload === 10;
+
+      // First roll in a frame or stike or spare in the last frame
+      if (
+        state.currentRoll === 0 ||
+        (state.currentFrame === 9 && (currentRollIsStrike || lastFrameSpare))
+      ) {
         state.availableRolls = PINS;
         state.zeroPins = false;
       }
       // Second roll in frame
-      else if (state.currentRoll === 1) {
-        // The last frame should allow for more rolls after strike or spare
-        if (
-          state.currentFrame === 9 &&
-          (action.payload === 10 ||
-            state.rolls[9][0] + state.rolls[9][1] === 10)
-        ) {
-          state.availableRolls = PINS;
-          state.zeroPins = false;
-        } else {
-          state.availableRolls = state.availableRolls.slice(
-            0,
-            11 - action.payload
-          );
-          if (state.availableRolls.length === 1) {
-            state.zeroPins = true;
-          }
-        }
+      else {
+        state.availableRolls = calcPinsRemaining(
+          state.availableRolls,
+          action.payload
+        );
+        state.zeroPins = state.availableRolls.length === 1;
       }
-      // Third roll in frame (last frame)
-      else if (state.currentRoll === 2) {
-        // Current roll is strike or past two were spare
-        if (
-          action.payload === 10 ||
-          state.rolls[9][0] + state.rolls[9][1] === 10
-        ) {
+
+      // Third roll in the last frame
+      if (state.currentRoll === 2) {
+        // This roll is strike or past two were spare
+        if (currentRollIsStrike || lastFrameSpare) {
           state.availableRolls = PINS;
           state.zeroPins = false;
         }
-        // First roll was strike
-        else if (state.rolls[9][0] === 10) {
-          state.availableRolls = state.availableRolls.slice(
-            0,
-            11 - action.payload
+        // First roll was strike, allow for a third roll
+        else if (lastFrameFirstStrike) {
+          state.availableRolls = calcPinsRemaining(
+            state.availableRolls,
+            action.payload
           );
-          if (state.availableRolls.length === 1) {
-            state.zeroPins = true;
-          }
-        } else {
-          // No available action when the user has played two rolls in the last frame
+          state.zeroPins = state.availableRolls.length === 1;
+        }
+        // No available action when the user has played two rolls in the last frame
+        else {
           state.availableRolls = [];
-          // Update the scores per frame
+          // Update the scores per frame before game end
           state.scoresPerFrame = calcTotalScore(state.rolls).frameScores;
           state.gameEnded = true;
         }
       }
-      // No available action when the game ended with three strikes
-      if (state.currentFrame === 10) {
+      // Game ends after three rolls have been played in the last frame
+      else if (state.currentFrame === 10) {
         state.availableRolls = [];
         state.gameEnded = true;
       }
