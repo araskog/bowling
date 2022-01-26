@@ -1,3 +1,3 @@
-# Bowling Calculator
+# Bowling Scoreboard
 
 Created with React and Redux
